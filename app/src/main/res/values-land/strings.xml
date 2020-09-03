@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="number_columns_film_adapter">4</integer>
+
+</resources>
