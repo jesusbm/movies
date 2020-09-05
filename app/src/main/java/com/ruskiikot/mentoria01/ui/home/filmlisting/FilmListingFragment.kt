@@ -1,5 +1,6 @@
 package com.ruskiikot.mentoria01.ui.home.filmlisting
 
+import FilmDetailsInteractor
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.ruskiikot.mentoria01.interactor.FilmListingInteractor
 import com.ruskiikot.mentoria01.model.network.FilmRaw
-import com.ruskiikot.mentoria01.repository.FilmRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,11 +21,11 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
 
     private val TAG: String = FilmListingFragment::class.java.simpleName
 
-    //@Inject
-    //lateinit var api: OmdbApi
+    @Inject
+    lateinit var listingInteractor: FilmListingInteractor
 
     @Inject
-    lateinit var repository: FilmRepository
+    lateinit var detailsInteractor: FilmDetailsInteractor
 
     @Inject
     lateinit var filmListingView: FilmListingView
@@ -47,7 +48,7 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
         val y = lifecycleScope
         Log.d(TAG, "${x}, ${y}")
         lifecycleScope.launchWhenStarted {
-            val dataList = repository.getFilmListing()
+            val dataList = listingInteractor.getFilmListing(page = currentPage)
             filmListingView.appendFilmsToListing(dataList)
             Log.d(TAG, "${dataList}")
         }
@@ -56,7 +57,7 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
     override fun refreshContentRequested() {
         lifecycle.coroutineScope.launch {
             currentPage = INITIAL_PAGE
-            val dataList = repository.getFilmListing(page = currentPage)
+            val dataList = listingInteractor.getFilmListing(page = currentPage)
             filmListingView.setFilmsToListing(dataList)
         }
     }
@@ -64,7 +65,7 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
     override fun clickOnItem(item: FilmRaw) {
         lifecycle.coroutineScope.launch {
             item.imdbID?.let {
-                val movieDetails = repository.getFilmDetail(it)
+                val movieDetails = detailsInteractor.getFilmDetails(it)
                 val action = FilmListingFragmentDirections.actionNavigationHomeToFilmInfoDialog(movieDetails)
                 findNavController().navigate(action)
             }
@@ -77,7 +78,7 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
             lifecycle.coroutineScope.launch {
                 Log.d(TAG, "LOADING MORE ITEMS")
                 currentPage += 1
-                val dataList = repository.getFilmListing(page = currentPage)
+                val dataList = listingInteractor.getFilmListing(page = currentPage)
                 filmListingView.appendFilmsToListing(dataList)
                 isLoading = false
             }

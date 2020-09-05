@@ -9,13 +9,13 @@ interface OmdbApi {
 
     @GET("/")
     suspend fun filmListing(
-        @Query("s") search: String = "star+wars",
-        @Query("page") page: Int = 1
+        @Query("s") search: String,
+        @Query("page") page: Int
     ): SearchResultRaw
 
     @GET("/")
     suspend fun detailsMovie(
-        @Query("i") idMovie: String = "tt0076759",
-        @Query("plot") plot: String = "full"
+        @Query("i") idMovie: String,
+        @Query("plot") plot: String
     ): FilmRaw
 }
