@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ruskiikot.mentoria01.databinding.ItemFilmBinding
-import com.ruskiikot.mentoria01.network.model.FilmRaw
+import com.ruskiikot.mentoria01.model.network.FilmRaw
 
 class FilmListingAdapter(
     diffCallback: DiffCallback = DIFF_CALLBACK_DEFAULT

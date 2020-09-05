@@ -1,7 +1,7 @@
 package com.ruskiikot.mentoria01.network
 
-import com.ruskiikot.mentoria01.network.model.FilmRaw
-import com.ruskiikot.mentoria01.network.model.SearchResultRaw
+import com.ruskiikot.mentoria01.model.network.FilmRaw
+import com.ruskiikot.mentoria01.model.network.SearchResultRaw
 import retrofit2.http.GET
 import retrofit2.http.Query
 

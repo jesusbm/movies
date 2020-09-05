@@ -9,26 +9,31 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.ruskiikot.mentoria01.network.OmdbApi
-import com.ruskiikot.mentoria01.network.model.FilmRaw
+import com.ruskiikot.mentoria01.model.network.FilmRaw
+import com.ruskiikot.mentoria01.repository.FilmRepository
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener {
 
-    private val TAG: String = "FilmListingFragment"
+    private val TAG: String = FilmListingFragment::class.java.simpleName
+
+    //@Inject
+    //lateinit var api: OmdbApi
 
     @Inject
-    lateinit var api: OmdbApi
+    lateinit var repository: FilmRepository
 
     @Inject
     lateinit var filmListingView: FilmListingView
 
     private lateinit var homeViewModel: HomeViewModel
+
+    private val INITIAL_PAGE = 1
+    private var currentPage = INITIAL_PAGE
+    private var isLoading = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         filmListingView.run {
@@ -42,47 +47,40 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
         val y = lifecycleScope
         Log.d(TAG, "${x}, ${y}")
         lifecycleScope.launchWhenStarted {
-            val dataList = api.filmListing()
-            filmListingView.appendFilmsToListing(dataList.Search)
+            val dataList = repository.getFilmListing()
+            filmListingView.appendFilmsToListing(dataList)
             Log.d(TAG, "${dataList}")
         }
     }
 
     override fun refreshContentRequested() {
         lifecycle.coroutineScope.launch {
-            val dataList = loadItems(currentPage)
-            filmListingView.appendFilmsToListing(dataList)
+            currentPage = INITIAL_PAGE
+            val dataList = repository.getFilmListing(page = currentPage)
+            filmListingView.setFilmsToListing(dataList)
         }
     }
 
     override fun clickOnItem(item: FilmRaw) {
         lifecycle.coroutineScope.launch {
             item.imdbID?.let {
-                val movieDetails = api.detailsMovie(it)
+                val movieDetails = repository.getFilmDetail(it)
                 val action = FilmListingFragmentDirections.actionNavigationHomeToFilmInfoDialog(movieDetails)
                 findNavController().navigate(action)
             }
         }
     }
 
-    var isLoading = false
-    var currentPage = 1
     override fun endOfListingReached() {
         if (!isLoading) {
             isLoading = true
             lifecycle.coroutineScope.launch {
                 Log.d(TAG, "LOADING MORE ITEMS")
                 currentPage += 1
-                val dataList = loadItems(currentPage)
+                val dataList = repository.getFilmListing(page = currentPage)
                 filmListingView.appendFilmsToListing(dataList)
                 isLoading = false
             }
-        }
-    }
-
-    private suspend fun loadItems(fromPage: Int): List<FilmRaw> {
-        return withContext(Dispatchers.IO) {
-            api.filmListing(page = fromPage).Search
         }
     }
 }

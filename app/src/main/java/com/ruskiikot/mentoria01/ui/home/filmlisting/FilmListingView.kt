@@ -5,7 +5,7 @@ import androidx.core.view.children
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ruskiikot.mentoria01.databinding.ViewFilmListingBinding
-import com.ruskiikot.mentoria01.network.model.FilmRaw
+import com.ruskiikot.mentoria01.model.network.FilmRaw
 import com.ruskiikot.mentoria01.ui.base.ObservableView
 import com.ruskiikot.mentoria01.util.getTypedLayoutManager
 
@@ -44,9 +44,13 @@ class FilmListingView(
 
     override val rootView: View = binding.root
 
+    fun setFilmsToListing(listing: List<FilmRaw>) {
+        filmListingAdapter.submitList(listing)
+        binding.refreshContainer.isRefreshing = false
+    }
+
     fun appendFilmsToListing(filmListing: List<FilmRaw>) {
         filmListingAdapter.submitList(filmListingAdapter.currentList + filmListing)
-        binding.refreshContainer.isRefreshing = false
     }
 
     override fun clickOnItem(item: FilmRaw) {

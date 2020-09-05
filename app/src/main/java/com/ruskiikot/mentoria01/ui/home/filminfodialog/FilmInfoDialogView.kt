@@ -2,7 +2,7 @@ package com.ruskiikot.mentoria01.ui.home.filminfodialog
 
 import android.view.View
 import com.ruskiikot.mentoria01.databinding.DialogInfoFilmBinding
-import com.ruskiikot.mentoria01.network.model.FilmRaw
+import com.ruskiikot.mentoria01.model.network.FilmRaw
 import com.ruskiikot.mentoria01.ui.base.ObservableView
 import com.squareup.picasso.Picasso
 

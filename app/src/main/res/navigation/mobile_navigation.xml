@@ -16,7 +16,7 @@
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="false"></action>
+            app:popUpToInclusive="false"/>
     </fragment>
 
     <fragment
@@ -38,7 +38,7 @@
         tools:layout="@layout/dialog_info_film">
         <argument
             android:name="itemValue"
-            app:argType="com.ruskiikot.mentoria01.network.model.FilmRaw" />
+            app:argType="com.ruskiikot.mentoria01.model.network.FilmRaw" />
     </dialog>
 
 

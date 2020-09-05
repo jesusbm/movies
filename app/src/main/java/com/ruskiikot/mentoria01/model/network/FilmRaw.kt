@@ -1,4 +1,4 @@
-package com.ruskiikot.mentoria01.network.model
+package com.ruskiikot.mentoria01.model.network
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -54,7 +54,7 @@ data class FilmRaw(
         return 0
     }
 
-    val CREATOR = object : Parcelable.Creator<FilmRaw> {
+    private val CREATOR = object : Parcelable.Creator<FilmRaw> {
         override fun createFromParcel(source: Parcel): FilmRaw {
             return FilmRaw(source)
         }
