@@ -48,7 +48,7 @@ class FragmentModule {
         ViewFilmListingBinding.inflate(LayoutInflater.from(context), null, false)
 
     @Provides
-    fun provideFilmAdapter(@ActivityContext context: Context) =
+    fun provideFilmAdapter() =
         FilmListingAdapter()
 
     @Provides

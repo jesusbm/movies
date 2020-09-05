@@ -1,3 +1,5 @@
+package com.ruskiikot.mentoria01.interactor
+
 import com.ruskiikot.mentoria01.model.network.FilmRaw
 import com.ruskiikot.mentoria01.repository.FilmRepository
 import kotlinx.coroutines.Dispatchers

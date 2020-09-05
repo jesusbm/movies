@@ -18,7 +18,7 @@ class FilmListingView(
 
     private val onScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            this@FilmListingView.onScrolled(recyclerView, dx, dy)
+            this@FilmListingView.onScrolled(recyclerView)
         }
     }
 
@@ -59,7 +59,7 @@ class FilmListingView(
         }
     }
 
-    private fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+    private fun onScrolled(recyclerView: RecyclerView) {
         for (child in recyclerView.children) {
             val childAdapterPosition = recyclerView.getChildAdapterPosition(child)
             if (childAdapterPosition + 1 == recyclerView.getTypedLayoutManager<GridLayoutManager>()?.itemCount) {

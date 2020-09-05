@@ -1,6 +1,5 @@
 package com.ruskiikot.mentoria01.ui.home.filmlisting
 
-import FilmDetailsInteractor
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.ruskiikot.mentoria01.interactor.FilmDetailsInteractor
 import com.ruskiikot.mentoria01.interactor.FilmListingInteractor
 import com.ruskiikot.mentoria01.model.network.FilmRaw
 import dagger.hilt.android.AndroidEntryPoint
