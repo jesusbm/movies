@@ -62,7 +62,7 @@ class FilmListingView(
     private fun onScrolled(recyclerView: RecyclerView) {
         for (child in recyclerView.children) {
             val childAdapterPosition = recyclerView.getChildAdapterPosition(child)
-            if (childAdapterPosition + 1 == recyclerView.getTypedLayoutManager<GridLayoutManager>()?.itemCount) {
+            if (1+ childAdapterPosition == recyclerView.getTypedLayoutManager<GridLayoutManager>()?.itemCount) {
                 notifyObservers {
                     it.endOfListingReached()
                 }
