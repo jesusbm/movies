@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 
 class FilmListingInteractor(private val repository: FilmRepository) {
 
-    suspend fun getFilmListing(search: String = "star+wars", page: Int): List<FilmRaw> {
+    suspend fun getFilmListing(search: String = "simpsons", page: Int): List<FilmRaw> {
         return withContext(Dispatchers.IO) {
             repository.getRemoteFilmListing(search, page)
         }

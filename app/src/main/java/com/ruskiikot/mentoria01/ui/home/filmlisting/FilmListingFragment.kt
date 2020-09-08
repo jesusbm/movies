@@ -48,17 +48,22 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
         val y = lifecycleScope
         Log.d(TAG, "${x}, ${y}")
         lifecycleScope.launchWhenStarted {
-            val dataList = listingInteractor.getFilmListing(page = currentPage)
-            filmListingView.appendFilmsToListing(dataList)
-            Log.d(TAG, "${dataList}")
+            filmListingView.run {
+                appendItems {
+                    listingInteractor.getFilmListing(page = currentPage)
+                }
+            }
         }
     }
 
     override fun refreshContentRequested() {
         lifecycle.coroutineScope.launch {
             currentPage = INITIAL_PAGE
-            val dataList = listingInteractor.getFilmListing(page = currentPage)
-            filmListingView.setFilmsToListing(dataList)
+            filmListingView.run {
+                setItems {
+                    listingInteractor.getFilmListing(page = currentPage)
+                }
+            }
         }
     }
 
@@ -72,14 +77,18 @@ class FilmListingFragment : Fragment(), FilmListingView.FilmListingViewListener 
         }
     }
 
-    override fun endOfListingReached() {
+    override fun endOfScrollReached() {
         if (!isLoading) {
             isLoading = true
             lifecycle.coroutineScope.launch {
                 Log.d(TAG, "LOADING MORE ITEMS")
                 currentPage += 1
                 val dataList = listingInteractor.getFilmListing(page = currentPage)
-                filmListingView.appendFilmsToListing(dataList)
+                if (dataList.isNotEmpty()) {
+                    filmListingView.appendItems { dataList }
+                } else {
+                    filmListingView.isEndOFListingReached = true
+                }
                 isLoading = false
             }
         }

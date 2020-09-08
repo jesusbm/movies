@@ -8,6 +8,7 @@
     tools:context=".ui.home.filmlisting.FilmListingFragment">
 
     <ImageView
+        android:id="@+id/bottom_icon"
         android:layout_width="wrap_content"
         android:layout_height="75dp"
         android:src="@drawable/filmstrip_icon"
@@ -30,5 +31,14 @@
             tools:listitem="@layout/item_film" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_open_listing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

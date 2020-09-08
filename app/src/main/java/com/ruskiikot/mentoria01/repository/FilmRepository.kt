@@ -1,11 +1,14 @@
 package com.ruskiikot.mentoria01.repository
 
+import android.util.Log
 import com.ruskiikot.mentoria01.model.network.FilmRaw
 import com.ruskiikot.mentoria01.network.OmdbApi
 import com.ruskiikot.mentoria01.util.startsAsHttpUrl
 import kotlinx.coroutines.delay
 
 class FilmRepository(private val api: OmdbApi) {
+
+    val TAG = FilmRepository::class.simpleName
 
     val FULL_PLOT = "full"
     val SHORT_PLOT = "short"
@@ -14,7 +17,10 @@ class FilmRepository(private val api: OmdbApi) {
         randomDelay(500)
         return api.filmListing(search = search, page = page)
             .Search
-            .filter { it.Poster.startsAsHttpUrl() }
+            ?.filterIndexed { index, item ->
+                Log.d(TAG, "POSTER($index): ${item.Poster}")
+                item.Poster.startsAsHttpUrl()
+            } ?: listOf()
     }
 
     suspend fun getFilmDetails(imdbID: String, isFullPlot: Boolean): FilmRaw {
